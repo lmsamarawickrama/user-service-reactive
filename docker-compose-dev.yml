@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  smartbidsreactive:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - smartbidsdb
+
+  smartbidsdb:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: smartbids
+      MONGO_INITDB_ROOT_PASSWORD: smartbids
+      MONGO_INITDB_DATABASE: smartbids
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
